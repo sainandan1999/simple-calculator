@@ -1,67 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rock Paper scissors</title>
-</head>
-<body>
+  </head>
+  <body>
     <p>Rock Paper Scissors</p>
     <button onclick="playerMove('Rock')">Rock</button>
     <button onclick="playerMove('Paper')">Paper</button>
     <button onclick="playerMove('Scissors')">Scissors</button>
-</body>
-<script>
-        function playerMove(playerMove){
-            if (playerMove ==='Scissors'){
-                computerMove =  pickComputermove();
-                if(computerMove==='scissors'){
-                    result='Its a Tie.';
-                } else if(computerMove==='Rock'){
-                qresult='You Lose';
-                }else if(computerMove==='Paper'){
-                    result='You win';
-                }
-                alert(`You picked ${playerMove} And Computer Picked ${computerMove} . ${result}`)
-        
-        } else if (playerMove==='Paper'){
-                    computerMove =  pickComputermove();
-                    if(computerMove==='Paper'){
-                        result='Its a Tie.';
-                    } else if(computerMove==='Scissors'){
-                        result='You Lose';
-                    }else if(computerMove==='Rock'){
-                    result='You win';
-                    }
-                    alert(`You picked ${playerMove} And Computer Picked ${computerMove} . ${result}`)
-        } else if(playerMove==='Rock'){
-            const computerMove =  pickComputermove();
-    if(computerMove==='Rock'){
-        result='Its a Tie.';
-    } else if(computerMove==='Paper'){
-        result='You Lose';
-    }else if(computerMove==='Scissors'){
-        result='You win';
+    <button onclick="score.win=0;score.lose=0;score.tie=0; 
+        localStorage.removeItem('score')">Reset Button</button>
+  </body>
+  <script>
+    let score = JSON.parse(localStorage.getItem("score"));
+  
+    if(score===null){
+         score={
+            win:0,
+            lose:0,
+            tie:0
+         }
     }
-    alert(`You picked ${playerMove} And Computer Picked ${computerMove} . ${result}`)
+  
+    function playerMove(playerMove) {
+      let score = JSON.parse(localStorage.getItem("score"));
+      if (score === null) {
+    score = { win: 0, lose: 0, tie: 0 };
+  };
+      let computerMove = pickComputermove();
+      let result = "";
+      if (playerMove === "Scissors") {
+        if (computerMove === "Scissors") {
+          result = "It's a tie.";
+        } else if (computerMove === "Rock") {
+          result = "You lose.";
+        } else if (computerMove === "Paper") {
+          result = "You win!";
         }
-
+      } else if (playerMove === "Paper") {
+        if (computerMove === "Paper") {
+          result = "It's a tie.";
+        } else if (computerMove === "Scissors") {
+          result = "You lose.";
+        } else if (computerMove === "Rock") {
+          result = "You win!";
         }
-
-    
-    function pickComputermove(){
-        let randomNumber=Math.random()
-        let computerMove='';
-        let result='';
-        if (randomNumber>=0 && randomNumber<1/3){
-            computerMove='Rock';
-        }  else if(randomNumber>=1/3 && randomNumber<2/3){
-            computerMove='Paper';
-        }else if(randomNumber>=2/3 && randomNumber<1){
-            computerMove='Scissors';
+      } else if (playerMove === "Rock") {
+        if (computerMove === "Rock") {
+          result = "It's a tie.";
+        } else if (computerMove === "Paper") {
+          result = "You lose.";
+        } else if (computerMove === "Scissors") {
+          result = "You win!";
         }
-        return computerMove;
+      }
+      if (result === "You win!") {
+        score.win += 1;
+      } else if (result === "You lose.") {
+        score.lose += 1;
+      } else if (result === "It's a tie.") {
+        score.tie += 1;
+      }
+      localStorage.setItem("score", JSON.stringify(score));
+  
+      alert(
+        `You picked ${playerMove} And Computer Picked ${computerMove} . ${result}
+  Win:${score.win} Lose:${score.lose} Tie:${score.tie}`
+      );
     }
-</script>
+  
+    function pickComputermove() {
+      let randomNumber = Math.random();
+      let computerMove = "";
+  
+      if (randomNumber >= 0 && randomNumber < 1 / 3) {
+        computerMove = "Rock";
+      } else if (randomNumber >= 1 / 3 && randomNumber < 2 / 3) {
+        computerMove = "Paper";
+      } else if (randomNumber >= 2 / 3 && randomNumber < 1) {
+        computerMove = "Scissors";
+      }
+      return computerMove;
+    }
+  </script>
+  
 </html>
